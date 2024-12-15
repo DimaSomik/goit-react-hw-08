@@ -1,48 +1,42 @@
 import { Formik, Form, Field} from 'formik';
-// import { ErrorMessage } from 'formik';
+import { ErrorMessage } from 'formik';
 import css from './ContactForm.module.css';
 import { useId } from 'react';
-import { useState } from 'react';
-import { nanoid } from 'nanoid';
-// import * as Yup from 'yup';
+import * as Yup from 'yup';
 
-const ContactForm = ({addContact}) => {
+const ContactForm = ({ addContact }) => {
     const nameID = useId();
     const numberID = useId();
-    const [name, setName] = useState({
-        id: nanoid(),
-        name: '',
-        number: ''
+
+    const ContactSchema = Yup.object({
+        name: Yup.string()
+                .matches(/^[A-Za-z\s]+$/, 'Name must contains only letters and spaces.')
+                .min(3, "Name is too short")
+                .max(50, "Name is too long")
+                .required("Name is Required"),
+        number: Yup.string()
+                .matches(/^[0-9]+$/, 'Phone number must contains only digits.')
+                .min(9, "Number must contain 9 digits")
+                .max(9, "Number must contain 9 digits")
+                .required("Number is Required"),
     });
 
-    /* Nie wiem dlaczego, ale ten schemat walidacji nie działa prawidłowo, mimo, ze jest taki sam jak w konspekcie */
-    // const ContactSchema = Yup.object().shape({
-    //     name: Yup.string().min(3, "Name is too short").max(50, "Name is too long").required("Name is Required"),
-    //     number: Yup.string().min(9, "Number must contain 7 digits").max(9, "Number must contain 7 digits").required("Number is Required")
-    // });
-
-    const handleSubmit = () => {   
-        addContact(name);
-        setName({
-            id: nanoid(),
-            name: '',
-            number: ''
-        })
+    const handleSubmit = (values, actions) => {   
+        addContact(values);
+        actions.resetForm();
     };
 
     return (
-        <Formik initialValues={{}} onSubmit={handleSubmit}>
+        <Formik initialValues={{name: "", number: ""}} onSubmit={handleSubmit} validationSchema={ContactSchema}>
                 <Form className={css.FormBox}>
                     <div>
                     <label htmlFor={nameID}>Name</label>
                     <Field type="text" 
                            name="name" 
                            id={nameID}
-                           value={name.name}
-                           onChange={(e) => {setName((prev) => {return {...prev, name: e.target.value}})}} 
                            className={css.NameField}
                            />
-                    {/* <ErrorMessage name="name" as="span" className={css.Error}/> */}
+                    <ErrorMessage name="name" as="span" className={css.Error}/>
                     </div>
 
                     <div>
@@ -50,17 +44,16 @@ const ContactForm = ({addContact}) => {
                     <Field type="text" 
                            name="number" 
                            id={numberID}
-                           value={name.number}
-                           onChange={(e) => {setName((prev) => {return {...prev, number: e.target.value}})}} 
                            className={css.NumberField}
-                           required/>
-                    {/* <ErrorMessage name="number" as="span" className={css.Error}/> */}
+                           />
+                    <ErrorMessage name="number" as="span" className={css.Error}/>
                     </div>
 
                     <button type="submit" className={css.FormButton}>Add contact</button>
                 </Form>
         </Formik>
     );
+
 };
 
 export default ContactForm;
