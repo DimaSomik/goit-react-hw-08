@@ -2,7 +2,7 @@ import css from './ContactList.module.css';
 import { IoPerson } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteContact } from '../redux/contactsSlice';
+import { deleteContact } from '../redux/asyncActions';
 
 const Contact = ({name, number, buttonFunc}) => {
     return (
@@ -21,7 +21,6 @@ const ContactList = () => {
     const data = useSelector((state) => state.contacts.items);
     const filter = useSelector((state) => state.filters.name.toLowerCase());
     const filteredContacts = data.filter((contact) => contact.name.toLowerCase().includes(filter));
-    console.log(filteredContacts);
 
     return (
         <ul className={css.ContactListBox}>
