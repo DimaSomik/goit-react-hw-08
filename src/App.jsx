@@ -1,29 +1,21 @@
-import ContactList from './components/ContactList';
-import SearchBox from './components/SearchBox';
-import ContactForm from './components/ContactForm';
 import './App.css'
-import css from './App.module.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { fetchContacts } from './redux/asyncActions';
+import { Layout } from './Layout';
+import { Route, Routes } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import ContactPage from './pages/ContactPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 function App() {
-  const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.contacts);
-
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
-
   return (
-    <div className={css.MainAppBox}>
-      <h1>Phonebook</h1>
-      <ContactForm />
-      <SearchBox />
-      {loading && <p>Loading...</p>}
-      {error && <p>Unexpected error occurred: {error}</p>}
-      <ContactList />
-    </div>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<HomePage />}/>
+        <Route path="/contacts" element={<ContactPage />}/>
+        <Route path="/login" element={<LoginPage />}/>
+        <Route path="/register" element={<RegisterPage />}/>
+      </Routes>
+    </Layout>
   );
 };
 
