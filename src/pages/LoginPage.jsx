@@ -18,9 +18,8 @@ const LoginPage = () => {
                 .max(50, "Name is too long")
                 .required("Email is Required"),
         password: Yup.string()
-                .matches(/^[0-9]+$/, 'Phone password must contains only digits.')
-                .min(9, "Password must contain 9 digits")
-                .max(9, "Password must contain 9 digits")
+                .min(3, "Password must contain at least 3 characters.")
+                .max(50, "Password is too long.")
                 .required("Password is Required"),
     });
 
