@@ -1,13 +1,4 @@
-import { selectUser, selectLogged, selectToken } from '../redux/authSlice';
-import { useSelector } from 'react-redux';
-
 const HomePage = () => {
-    const getData = useSelector(selectUser);
-    const getData2 = useSelector(selectLogged);
-    const getData3 = useSelector(selectToken);
-
-    console.log("Slice data: ", getData, getData2, getData3);
-
     return (
         <div>
             <p>I think that gay marriage is something that should be between a man and a woman. - Arnold Schwarzenegger <br></br><br></br>

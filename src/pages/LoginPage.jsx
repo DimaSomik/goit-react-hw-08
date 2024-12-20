@@ -3,14 +3,17 @@ import { ErrorMessage } from 'formik';
 import css from './LoginPage.module.css';
 import { useId } from 'react';
 import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { logIn } from '../redux/authOperations';
 
 const LoginPage = () => {
     const emailID = useId();
     const passwordID = useId();
+    const dispatch = useDispatch();
 
     const ContactSchema = Yup.object({
         email: Yup.string()
-                .matches(/^[A-Za-z\s]+$/, 'Email must contains only letters and spaces.')
+                .matches(/@[^.]*\./, 'Email must contains @ sign.')
                 .min(3, "Name is too short")
                 .max(50, "Name is too long")
                 .required("Email is Required"),
@@ -22,7 +25,10 @@ const LoginPage = () => {
     });
 
     const handleSubmit = (values, actions) => {   
-        console.log(values);
+        dispatch(logIn({
+            email: values.email,
+            password: values.password,
+        }));
         actions.resetForm();
     };
 
@@ -30,6 +36,7 @@ const LoginPage = () => {
         <div className={css.FormMainBox}>
             <Formik initialValues={{email: "", password: ""}} onSubmit={handleSubmit} validationSchema={ContactSchema}>
                 <Form className={css.FormBox}>
+                    <h1>Login</h1>
                     <div>
                     <label htmlFor={emailID}>Email</label>
                     <Field type="text" 

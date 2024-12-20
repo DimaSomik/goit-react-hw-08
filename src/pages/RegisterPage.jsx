@@ -13,21 +13,21 @@ const RegisterPage = () => {
     const dispatch = useDispatch();
 
     const ContactSchema = Yup.object({
-        // name: Yup.string()
-        //         .matches(/^[A-Za-z\s]+$/, 'Name must contains only letters and spaces.')
-        //         .min(3, "Name is too short")
-        //         .max(50, "Name is too long")
-        //         .required("Name is Required"),
-        // email: Yup.string()
-        //         .matches(/@[^.]*\./, 'Email must contains only letters and spaces.')
-        //         .min(3, "Name is too short")
-        //         .max(50, "Name is too long")
-        //         .required("Email is Required"),
-        // password: Yup.string()
-        //         .matches(/^[0-9]+$/, 'Phone password must contains only digits.')
-        //         .min(9, "Password must contain 9 digits")
-        //         .max(9, "Password must contain 9 digits")
-        //         .required("Password is Required"),
+        name: Yup.string()
+                .matches(/^[A-Za-z\s]+$/, 'Name must contains only letters and spaces.')
+                .min(3, "Name is too short")
+                .max(50, "Name is too long")
+                .required("Name is Required"),
+        email: Yup.string()
+                .matches(/@[^.]*\./, 'Email must contains @ sign.')
+                .min(3, "Name is too short")
+                .max(50, "Name is too long")
+                .required("Email is Required"),
+        password: Yup.string()
+                .matches(/^[0-9]+$/, 'Phone password must contains only digits.')
+                .min(9, "Password must contain 9 digits")
+                .max(9, "Password must contain 9 digits")
+                .required("Password is Required"),
     });
 
     const handleSubmit = (values, actions) => {   
@@ -36,7 +36,6 @@ const RegisterPage = () => {
             email: values.email,
             password: values.password,
         }));
-        // console.log(values);
         actions.resetForm();
     };
 
@@ -44,6 +43,7 @@ const RegisterPage = () => {
         <div className={css.FormMainBox}>
             <Formik initialValues={{name: "", email: "", password: ""}} onSubmit={handleSubmit} validationSchema={ContactSchema}>
                 <Form className={css.FormBox}>
+                    <h1>Register</h1>
                     <div>
                     <label htmlFor={nameID}>Name</label>
                     <Field type="text" 
